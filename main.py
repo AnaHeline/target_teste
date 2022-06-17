@@ -1,17 +1,10 @@
 import pandas as pd
 import numpy as np
 import os
-import json
 
-tabela = pd.read_json("/content/drive/MyDrive/teste_target/dados.json")
+tabela = pd.read_csv(f"/content/drive/MyDrive/teste_target/faturamento_estados.csv")
 
-menor_valor = tabela[['valor']].min()
-print("O menor valor de faturamento ocorrido em um dia do mês é:", menor_valor)
+tabela['Faturamento'] = tabela['Faturamento'].apply(lambda x: float(x.replace(".", "").replace(",", ".")))
+tabela['Percente'] = (tabela['Faturamento'] / tabela['Faturamento'].sum()) * 100
 
-maior_valor = tabela[['valor']].max()
-print("O menor valor de faturamento ocorrido em um dia do mês é:", maior_valor)
-
-media_faturamento = tabela[tabela['valor'] != 0].mean()
-rowns = tabela[tabela['valor'] >= media_faturamento[1]]
-qtde = len(rowns.index)
-print("Número de dias no mês em que o valor de faturamento diário foi superior à média mensal", qtde)
+print(tabela)
